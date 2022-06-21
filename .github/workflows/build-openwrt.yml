@@ -10,7 +10,14 @@
 
 name: Build OpenWrt
 
-on: push
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
 
 env:
   REPO_URL: https://github.com/Lienol/openwrt
@@ -78,11 +85,7 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-        
-    - name: Load custom zzz-default-settings
-      run: |
-        mv zzz-default-settings openwrt/package/default-settings/files/zzz-default-settings
-
+            
     - name: Download package
       id: package
       run: |
